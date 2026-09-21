@@ -1,0 +1,6 @@
+{
+  "name": "AGM All In One - Hospital Facility Management",
+  "description": "Comprehensive Hospital Facility Management Suite for Dubai healthcare standards, featuring PPM tracking, Hard & Soft FM, Air & Water quality testing, vendor directory, and intelligent quotation auto-match comparison.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

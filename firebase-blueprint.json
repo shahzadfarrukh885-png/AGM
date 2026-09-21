@@ -1,0 +1,110 @@
+{
+  "entities": {
+    "assets": {
+      "title": "Hospital Asset",
+      "description": "Hospital facility and biomedical equipment assets with RFID/barcode tagging, DHA/JCI criticality, serial numbers, warranty, and maintenance schedule",
+      "type": "object",
+      "properties": {
+        "tagNumber": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "department": { "type": "string" },
+        "location": { "type": "string" },
+        "zone": { "type": "string" },
+        "manufacturer": { "type": "string" },
+        "model": { "type": "string" },
+        "serialNumber": { "type": "string" },
+        "installationDate": { "type": "string" },
+        "warrantyExpiryDate": { "type": "string" },
+        "criticality": { "type": "string" },
+        "status": { "type": "string" },
+        "assignedVendor": { "type": "string" },
+        "ppmFrequency": { "type": "string" },
+        "lastPpmDate": { "type": "string" },
+        "nextPpmDate": { "type": "string" },
+        "purchaseCostAED": { "type": "number" },
+        "rfidBarcode": { "type": "string" },
+        "dhaInspectionRequired": { "type": "boolean" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["tagNumber", "name", "category", "location", "criticality", "status"]
+    },
+    "ppmTasks": {
+      "title": "Preventative Maintenance Task",
+      "description": "Hospital PPM schedule and compliance work orders",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "title": { "type": "string" },
+        "domain": { "type": "string" },
+        "category": { "type": "string" },
+        "equipment": { "type": "string" },
+        "assetTag": { "type": "string" },
+        "location": { "type": "string" },
+        "zone": { "type": "string" },
+        "frequency": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "status": { "type": "string" },
+        "complianceBody": { "type": "string" },
+        "assignedVendor": { "type": "string" },
+        "criticality": { "type": "string" }
+      },
+      "required": ["code", "title", "dueDate", "status"]
+    },
+    "vendors": {
+      "title": "Hospital Facility Contractors & AMC Contracts",
+      "description": "Registered AMC and specialized hospital contractors with contract start/end dates, duration, payment terms (30 days, quarterly, yearly), contract values, and DHA/DM licenses",
+      "type": "object",
+      "properties": {
+        "serialNumber": { "type": "number" },
+        "name": { "type": "string" },
+        "tradeCategory": { "type": "string" },
+        "contractStartDate": { "type": "string" },
+        "contractEndDate": { "type": "string" },
+        "contractDuration": { "type": "string" },
+        "paymentTerms": { "type": "string" },
+        "contractValueAED": { "type": "number" },
+        "billingCycleNotes": { "type": "string" },
+        "tradeLicenseNo": { "type": "string" },
+        "dmDhaApprovalNo": { "type": "string" },
+        "contactPerson": { "type": "string" },
+        "activeAmcStatus": { "type": "string" }
+      },
+      "required": ["name", "tradeCategory", "contractStartDate", "contractEndDate", "paymentTerms"]
+    },
+    "facilityStaff": {
+      "title": "Facility Staff Member & 30-Day Attendance",
+      "description": "Hospital facility management team members, designations, departments, shifts, contact, and 30-day attendance record mapping",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "designation": { "type": "string" },
+        "department": { "type": "string" },
+        "employeeCode": { "type": "string" },
+        "shift": { "type": "string" },
+        "phone": { "type": "string" },
+        "attendance": { "type": "object" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "designation", "employeeCode"]
+    },
+    "fmConfig": {
+      "title": "Facility Shift Timings Configuration",
+      "description": "Custom morning, evening, and night shift start/end times and descriptions for the hospital",
+      "type": "object",
+      "properties": {
+        "morningStart": { "type": "string" },
+        "morningEnd": { "type": "string" },
+        "eveningStart": { "type": "string" },
+        "eveningEnd": { "type": "string" },
+        "nightStart": { "type": "string" },
+        "nightEnd": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}
