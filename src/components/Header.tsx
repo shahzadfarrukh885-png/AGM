@@ -19,6 +19,7 @@ interface HeaderProps {
   openRegulationsModal: () => void;
   onSelectQuickFilter?: (filter: string) => void;
   onNavigateToInspection?: () => void;
+  onNavigateToDesktop?: () => void;
   isCloudConnected?: boolean;
 }
 
@@ -29,6 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
   openRegulationsModal,
   onSelectQuickFilter,
   onNavigateToInspection,
+  onNavigateToDesktop,
   isCloudConnected = true
 }) => {
   const [timeString, setTimeString] = useState('');
@@ -91,21 +93,25 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
         {/* Brand & Identity */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center shadow-lg shadow-emerald-900/40 border border-emerald-400/30">
+          <div 
+            onClick={onNavigateToDesktop}
+            className="flex items-center gap-3 cursor-pointer group"
+            title="Click to go to Desktop Folders"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center shadow-lg shadow-emerald-900/40 border border-emerald-400/30 group-hover:scale-105 transition-transform">
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-bold text-lg tracking-tight text-white flex items-center gap-1.5">
+                <h1 className="font-bold text-lg tracking-tight text-white flex items-center gap-1.5 group-hover:text-emerald-300 transition-colors">
                   AGM ALL IN ONE
                   <span className="bg-emerald-500/20 text-emerald-300 text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded border border-emerald-500/30 tracking-wider">
                     Hospital FM Suite
                   </span>
                 </h1>
               </div>
-              <p className="text-xs text-slate-400">
-                Facility Management, Hard &amp; Soft PPMs, Air/Water Quality &amp; Quotations
+              <p className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
+                Facility Management • Click for Desktop Folders
               </p>
             </div>
           </div>

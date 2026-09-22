@@ -33,6 +33,7 @@ import { AssetListView } from './components/AssetListView.tsx';
 import { HospitalServicesDirectoryView } from './components/HospitalServicesDirectoryView.tsx';
 import { StaffAttendanceView } from './components/StaffAttendanceView.tsx';
 import { DubaiRegulationsGuideModal } from './components/DubaiRegulationsGuideModal.tsx';
+import { DesktopFolderView } from './components/DesktopFolderView.tsx';
 import { 
   initializeFirestoreData, 
   subscribeToAssets, 
@@ -73,12 +74,15 @@ import {
   Cloud,
   Briefcase,
   CalendarCheck,
-  Users
+  Users,
+  Folder,
+  ArrowLeft,
+  Monitor
 } from 'lucide-react';
 
 export default function App() {
-  // Navigation
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'services' | 'attendance' | 'ppm' | 'testing' | 'vendors' | 'quotations' | 'inspection' | 'assets'>('dashboard');
+  // Navigation - Defaults to clean Desktop Folders view (as requested by user)
+  const [activeTab, setActiveTab] = useState<'desktop' | 'dashboard' | 'services' | 'attendance' | 'ppm' | 'testing' | 'vendors' | 'quotations' | 'inspection' | 'assets'>('desktop');
   const [ppmFilterOverride, setPpmFilterOverride] = useState<string>('all');
   const [selectedRfqId, setSelectedRfqId] = useState<string>('');
   const [globalSearch, setGlobalSearch] = useState('');
@@ -550,7 +554,9 @@ export default function App() {
 
   // Navigation router
   const handleNavigateTab = (tab: string, filter?: string) => {
-    if (tab === 'ppm') {
+    if (tab === 'desktop') {
+      setActiveTab('desktop');
+    } else if (tab === 'ppm') {
       setActiveTab('ppm');
       if (filter) {
         setPpmFilterOverride(filter);
@@ -586,6 +592,7 @@ export default function App() {
         openRegulationsModal={() => setIsRegulationsModalOpen(true)}
         onSelectQuickFilter={(filter) => handleNavigateTab('ppm', filter)}
         onNavigateToInspection={() => setActiveTab('inspection')}
+        onNavigateToDesktop={() => setActiveTab('desktop')}
         isCloudConnected={isCloudConnected}
       />
 
@@ -593,6 +600,20 @@ export default function App() {
       <div className="max-w-7xl w-full mx-auto px-4 py-4 sm:py-6 flex-1 flex flex-col space-y-5">
         {/* Navigation Tabs Bar */}
         <nav className="bg-white p-1.5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+          <button
+            onClick={() => {
+              setActiveTab('desktop');
+            }}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              activeTab === 'desktop'
+                ? 'bg-emerald-800 text-white shadow-sm ring-2 ring-emerald-500/50'
+                : 'text-emerald-900 bg-emerald-50 hover:bg-emerald-100/90 border border-emerald-300/80'
+            }`}
+          >
+            <Folder className="w-4 h-4 text-emerald-500" />
+            <span>Desktop Folders</span>
+          </button>
+
           <button
             onClick={() => {
               setActiveTab('dashboard');
@@ -747,8 +768,55 @@ export default function App() {
           </button>
         </nav>
 
+        {/* Back to Desktop Navigation Bar (Shown when inside any specific folder/module) */}
+        {activeTab !== 'desktop' && (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl border border-slate-200 shadow-xs">
+            <button
+              onClick={() => setActiveTab('desktop')}
+              className="inline-flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-emerald-700 transition-all bg-slate-100 hover:bg-emerald-50 px-3.5 py-2 rounded-xl border border-slate-200/90 hover:border-emerald-300 w-fit"
+            >
+              <ArrowLeft className="w-4 h-4 text-emerald-600" />
+              <span>Back to Desktop Folders</span>
+            </button>
+
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <span>Active Module:</span>
+              <span className="font-extrabold text-slate-900 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 flex items-center gap-1.5">
+                <Folder className="w-3.5 h-3.5 text-emerald-600" />
+                <span>
+                  {activeTab === 'vendors' ? 'Contractors Folder' :
+                   activeTab === 'attendance' ? 'Staff Attendance & Roster' :
+                   activeTab === 'services' ? 'FM Services Scope' :
+                   activeTab === 'ppm' ? 'PPM & Maintenance' :
+                   activeTab === 'assets' ? 'Asset List & Tagging' :
+                   activeTab === 'testing' ? 'Air & Water Testing' :
+                   activeTab === 'inspection' ? 'DHA & JCI Inspection Dossier' :
+                   activeTab === 'quotations' ? 'Quotations & Auto-Match' :
+                   'Facility Operations Overview'}
+                </span>
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Dynamic View Rendering */}
         <main className="flex-1">
+          {activeTab === 'desktop' && (
+            <DesktopFolderView
+              tasks={tasks}
+              airTests={airTests}
+              waterTests={waterTests}
+              vendors={vendors}
+              rfqs={rfqs}
+              quotations={quotations}
+              assets={assets}
+              staffList={staffList}
+              hospitalServicesCount={hospitalServices.length}
+              onOpenModule={(tab, filter) => handleNavigateTab(tab, filter)}
+              onOpenRegulations={() => setIsRegulationsModalOpen(true)}
+            />
+          )}
+
           {activeTab === 'dashboard' && (
             <DashboardView
               tasks={tasks}
